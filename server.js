@@ -20,16 +20,19 @@ app.use(bodyParser.json())
 /*=====================================================
 Create books Collection
 =======================================================*/
+
+/*
+
 var isbns = [9780156012195, 9780743273565, 9780435905484, 9780140275360, 9780756404741, 9780756407919, 9780140177398, 9780316769488, 9780062225672, 9780143130154, 9780307455925, 9781501143519]
 var url = "https://www.googleapis.com/books/v1/volumes?q=isbn:"
 
 for (var i = 0; i < isbns.length; i++) {
   var apiURL = url + isbns[i];
-  /*=====================================================
-  the first time you run your code, uncomment the function below.
-  for subsequent runs, re-comment it so that it runs only once!
-  that said, there is a fail-safe to avoid duplicates below
-  =======================================================*/
+  // =====================================================
+  // the first time you run your code, uncomment the function below.
+  // for subsequent runs, re-comment it so that it runs only once!
+  // that said, there is a fail-safe to avoid duplicates below
+  // =======================================================
   loadFromAPI(apiURL)
 }
 console.log("done");
@@ -62,9 +65,9 @@ function loadFromAPI(apiURL) {
 }
 
 
-/*=====================================================
-Create People Collection
-=======================================================*/
+// =====================================================
+// Create People Collection
+// =======================================================
 var colors = ["brown", "black", "red", "yellow", "green", "grey"]
 var getColor = function() {
   return colors[Math.floor(Math.random() * colors.length)]
@@ -100,14 +103,14 @@ var getKids = function(numKids) {
 }
 
 
-/*=====================================================
-the below code always makes sure
-you don't have over 100 people and
-adds new people and their kids until you do have 100
+// =====================================================
+// the below code always makes sure
+// you don't have over 100 people and
+// adds new people and their kids until you do have 100
 
-try to understand how this code works
-could you write it differently?
-=======================================================*/
+// try to understand how this code works
+// could you write it differently?
+// =======================================================
 Person.find({}).count(function(err, count) {
   // the below two loops could be changed to a simple:
   // for (var i = count; i < 100; i++) {}
@@ -128,12 +131,13 @@ Person.find({}).count(function(err, count) {
   }
 })
 
+*/
 
 /*=====================================================
 Start the server:
 =======================================================*/
 
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log("Server up and running on port 3000")
 })
 
@@ -151,18 +155,43 @@ and your server is running do the following:
 ----------------------*/
 //1. Find books with fewer than 500 but more than 200 pages
 
+// Book.find({pages:{ $gte: 200 , $lte: 700 } }, function (err, books) {
+//   books.forEach(b=>console.log(b.title+ " "+ b.pages))
+// })
+
 //2. Find books whose rating is less than 5, and sort by the author's name
 
+// Book.find({rating:{$lt: 5 } }, function (err, books) {
+//   books.forEach(b=>console.log(b.title+ " "+ b.rating +" "+ b.author))
+// }).sort({author: 1})
+
 //3. Find all the Fiction books, skip the first 2, and display only 3 of them
+
+// Book.find({genres:{$in: ["Fiction","FICTION"] } }, function (err, books) {
+//   books.splice(2,3).forEach(b=>console.log(b.title + " "+b.genres))
+// })
 
 
 /*People
 ----------------------*/
 //1. Find all the people who are tall (>180) AND rich (>30000)
 
+// Person.find({$and:[{height:{ $gte: 180} },{salary:{ $gte: 30000} }]}, function (err, people) {
+//   people.forEach(p=>console.log(p.salary+" "+p.height))
+// })
+
+
 //2. Find all the people who are tall (>180) OR rich (>30000)
 
+// Person.find({$or:[{height:{ $gte: 180} },{salary:{ $gte: 30000} }]}, function (err, people) {
+//   people.forEach(p=>console.log(p.salary+" "+p.height))
+// })
+
 //3. Find all the people who have grey hair or eyes, and are skinny (<70)
+
+// Person.find({$and:[{$or:[{hair:"grey" },{eyes:"grey" }]},{weight:{$lte:70}}]}, function (err, people) {
+//   people.forEach(p=>console.log(p.hair+" "+p.eyes+" "+p.weight))
+// })
 
 //4. Find people who have at least 1 kid with grey hair
 
